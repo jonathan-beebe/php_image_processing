@@ -1,3 +1,10 @@
+PHP Image Processing
+====================
+
+Source can be found on github: 
+
+    https://github.com/somethingkindawierd/php_image_processing
+
 Released under the MIT license (see accompanying License.txt file).
 
 Feel free to use as needed, and fork at will.
