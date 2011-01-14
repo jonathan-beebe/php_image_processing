@@ -28,3 +28,8 @@ An example url with the path relative to the script
 
     http://localhost/Sites/php/php_image_processing/image.php?i=test_images/boats.jpg&w=100&h=100
 
+TODO
+====
+
+*   Add ability to use curl to download an image located on different server.
+
