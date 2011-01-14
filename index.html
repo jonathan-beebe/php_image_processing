@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang=en>
+    <head>
+        <meta charset=utf-8>
+        <title>Image Processing Test</title>
+    </head>
+    <body>
+        <h1>100px square + sharpening version:</h1>
+        <img src="image.php?i=test_images/boats.jpg&w=100&h=100&sharpen" />
+        <h1>100px square no sharpening version:</h1>
+        <img src="image.php?i=test_images/boats.jpg&w=100&h=100" />
+
+        <h1>100px square + sharpening version:</h1>
+        <img src="image.php?i=test_images/tree.jpg&w=100&h=100&sharpen" />
+        <h1>100px square no sharpening version:</h1>
+        <img src="image.php?i=test_images/tree.jpg&w=100&h=100" />
+
+        <h1>Original Image:</h1>
+        <img src="test_images/boats.jpg" />
+        <h1>Original Image:</h1>
+        <img src="test_images/tree.jpg" />
+    </body>
+
+    <!-- IE hack example from Google slide show -->
+    <!--[if lt IE 9]>
+    <script 
+        src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">
+    </script>
+    <script>CFInstall.check({ mode: "overlay" });</script>
+    <![endif]-->
+
+</html>
+
