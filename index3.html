@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang=en>
+    <head>
+        <meta charset=utf-8>
+        <title>Image Processing Test</title>
+        <style>
+        
+        div.container img { float: left; }
+        div.container:hover img { outline: 1px solid rgba(255,255,255,0.3); }
+        div.container p { 
+          float: left; width: 42.97px; height: 26.367px; margin: 0; padding: 0;  
+          text-align: center; line-height: 26px; font-size: 8px; 
+          background: #ccc; outline: 1px solid rgba(255,255,255,0.5); 
+        }
+        div.container { float: left; width: 129px; }
+        div.row { float: left; width: 100%; }
+        
+        </style>
+    </head>
+    <body>
+      <div class="row">
+        <h1>Tiled Image</h1>
+        <div class="container">
+          <div class="row">
+            <img src='image.php?ic=test_images/sub_dir/boats.jpg&o={"scale":{"w":"10%","h":"10%"}, "crop":{"x":"LEFT","y":"TOP","w":42.67,"h":26.367}}' />
+            <img src='image.php?ic=test_images/sub_dir/boats.jpg&o={"scale":{"w":"10%","h":"10%"}, "crop":{"x":"CENTER","y":"TOP","w":42.67,"h":26.367}}' />
+            <img src='image.php?ic=test_images/sub_dir/boats.jpg&o={"scale":{"w":"10%","h":"10%"}, "crop":{"x":"RIGHT","y":"TOP","w":42.67,"h":26.367}}' />
+          </div>
+          <div class="row">
+            <img src='image.php?ic=test_images/sub_dir/boats.jpg&o={"scale":{"w":"10%","h":"10%"}, "crop":{"x":"LEFT","y":"CENTER","w":42.67,"h":26.367}}' />
+            <img src='image.php?ic=test_images/sub_dir/boats.jpg&o={"scale":{"w":"10%","h":"10%"}, "crop":{"x":"CENTER","y":"CENTER","w":42.67,"h":26.367}}' />
+            <img src='image.php?ic=test_images/sub_dir/boats.jpg&o={"scale":{"w":"10%","h":"10%"}, "crop":{"x":"RIGHT","y":"CENTER","w":42.67,"h":26.367}}' />
+          </div>
+          <div class="row">
+            <img src='image.php?ic=test_images/sub_dir/boats.jpg&o={"scale":{"w":"10%","h":"10%"}, "crop":{"x":"LEFT","y":"BOTTOM","w":42.67,"h":26.367}}' />
+            <img src='image.php?ic=test_images/sub_dir/boats.jpg&o={"scale":{"w":"10%","h":"10%"}, "crop":{"x":"CENTER","y":"BOTTOM","w":42.67,"h":26.367}}' />
+            <img src='image.php?ic=test_images/sub_dir/boats.jpg&o={"scale":{"w":"10%","h":"10%"}, "crop":{"x":"RIGHT","y":"BOTTOM","w":42.67,"h":26.367}}' />
+          </div>
+        </div>
+        <div class="container">
+          <div class="row">
+            <img src='image.php?ic=test_images/sub_dir/boats.jpg&o={"scale":{"w":"10%","h":"10%"}, "crop":{"x":"LEFT","y":"TOP","w":42.67,"h":26.367}, "sharpen":true}' />
+            <img src='image.php?ic=test_images/sub_dir/boats.jpg&o={"scale":{"w":"10%","h":"10%"}, "crop":{"x":"CENTER","y":"TOP","w":42.67,"h":26.367}, "sharpen":true}' />
+            <img src='image.php?ic=test_images/sub_dir/boats.jpg&o={"scale":{"w":"10%","h":"10%"}, "crop":{"x":"RIGHT","y":"TOP","w":42.67,"h":26.367}, "sharpen":true}' />
+          </div>
+          <div class="row">
+            <img src='image.php?ic=test_images/sub_dir/boats.jpg&o={"scale":{"w":"10%","h":"10%"}, "crop":{"x":"LEFT","y":"CENTER","w":42.67,"h":26.367}, "sharpen":true}' />
+            <img src='image.php?ic=test_images/sub_dir/boats.jpg&o={"scale":{"w":"10%","h":"10%"}, "crop":{"x":"CENTER","y":"CENTER","w":42.67,"h":26.367}, "sharpen":true}' />
+            <img src='image.php?ic=test_images/sub_dir/boats.jpg&o={"scale":{"w":"10%","h":"10%"}, "crop":{"x":"RIGHT","y":"CENTER","w":42.67,"h":26.367}, "sharpen":true}' />
+          </div>
+          <div class="row">
+            <img src='image.php?ic=test_images/sub_dir/boats.jpg&o={"scale":{"w":"10%","h":"10%"}, "crop":{"x":"LEFT","y":"BOTTOM","w":42.67,"h":26.367}, "sharpen":true}' />
+            <img src='image.php?ic=test_images/sub_dir/boats.jpg&o={"scale":{"w":"10%","h":"10%"}, "crop":{"x":"CENTER","y":"BOTTOM","w":42.67,"h":26.367}, "sharpen":true}' />
+            <img src='image.php?ic=test_images/sub_dir/boats.jpg&o={"scale":{"w":"10%","h":"10%"}, "crop":{"x":"RIGHT","y":"BOTTOM","w":42.67,"h":26.367}, "sharpen":true}' />
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <h1>Description</h1>
+        <p>The image above is actually 9 distinct pieces, each its own <code>img</code> element.</p>
+        <p>The purpose is to demonstrate the advanced scaling/cropping that can be accomplished dynamically.</p>
+        <p>The left image has only been scaled and cropped. The right image has a sharpening filter applied.</p>
+        <ol>
+          <li>The image was scaled to 10% of its original size.</li>
+          <li>Then each was cropped to its region.</li>
+          <li>Lastly a minor sharpen filter was run on each.</li>
+        </ol>
+        <div class="container">
+          <div class="row">
+            <p>TL</p><p>TC</p><p>TR</p>
+          </div>
+          <div class="row">
+            <p>CL</p><p>CC</p><p>CR</p>
+          </div>
+          <div class="row">
+            <p>BL</p><p>BC</p><p>BR</p>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <h1>Original Image:</h1>
+        <img src="test_images/sub_dir/boats.jpg" />
+      </div>
+    </body>
+
+</html>
+

@@ -123,11 +123,7 @@ class DIP {
     
     // If the file modification time of the original is NEWER than the thumbnail
     // OR the numbnail does not exist then process image.
-    if(
-      !file_exists($destinationPath)
-      //or ( filemtime($destinationPath) - filemtime( $image->src_image_path ) < 0 )
-      or ($options->nocache)
-    ) {
+    if(!file_exists($destinationPath) or ($options->nocache)) {
     
       $image = new Image();
       
@@ -176,7 +172,6 @@ class DIP {
         break;
         
       case 'sharpen':
-        echo "<h1>SHARPEN</h1>";
         $image->sharpen();
         break;
         
