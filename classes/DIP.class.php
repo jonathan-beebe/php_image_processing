@@ -10,6 +10,8 @@
  */
 class DIP {
 
+	
+	
   public $debug = false;
   public $base = null;
   
@@ -51,7 +53,7 @@ class DIP {
     $crop->h = $options->h;
     $options->crop = $crop;
     
-    // If sharpenening has been requested then move it to the bottom of stack
+    // If sharpenening has been requested then move it to the bottom of object
     // because sharpening should always be performed last.
     if(isset($options->sharpen)) {
       $o = $options->sharpen;
@@ -59,7 +61,7 @@ class DIP {
       $options->sharpen = $o;
     }
     
-    if($this->debug) echo '<p>options = <pre>' . var_export($options, true) . '</pre>';
+    if($this->debug) trace('options', $options);
     
     return $this->ProcessComplex($path, $options);
   }
@@ -79,26 +81,19 @@ class DIP {
    */
   public function ProcessComplex($path, $options) {
     
+  	// Flesh-out the options object with defaults. Kinda like merging, but
+  	// more advanced.
     $options = $this->FillinOptions($options);
     
-    if($this->debug) echo '<p>options = <pre>' . var_export($options, true) . '</pre>';
+    if($this->debug) trace('options', $options);
     
     $path_parts = $this->LocateImage($path);
     
-    /*   $path_parts = array (
-     *     'dirname' => 'test_images/sub_dir',
-     *     'basename' => 'boats.jpg',
-     *     'extension' => 'jpg',
-     *     'filename' => 'boats',
-     *     'sourceImagePath' => '/test_images/sub_dir/boats.jpg',
-     *   )
-     */    
-    
-    if($this->debug) echo '<p>$pathData = <pre>' . var_export($path_parts, true) . '</pre>';
+    if($this->debug) trace('pathData', $path_parts);
     
     $destinationPath = $this->CalculateDestinationPath($path_parts, $options);
     
-    if($this->debug) echo '<p>$destinationPath = <pre>' . var_export($destinationPath, true) . '</pre>';
+    if($this->debug) trace('destinationPath', $destinationPath);
     
     // If the file modification time of the original is NEWER than the thumbnail
     // OR the numbnail does not exist then process image.
@@ -114,7 +109,7 @@ class DIP {
       // If target width and/or height is smaller than original, then process image
       if( $options->w < $image->original_width || $options->h < $image->original_height ) {
         
-        if($this->debug) echo '<p>will process thumbnail</p>';
+        if($this->debug) trace('will process thumbnail');
         
         // Set the save destination for the processed image
         $image->setSaveDestination($destinationPath);
@@ -139,7 +134,13 @@ class DIP {
   
   
   
-  public function PerformImageFilters($image, $options) {
+  /**
+   * Perform all image filters in the order they appear withi options object.
+   * 
+   * @param Image $image The image object to process.
+   * @param object $options The options object.
+   */
+  public function PerformImageFilters(Image $image, $options) {
     foreach($options as $key=>$opt) {
       
       switch($key) {
@@ -162,6 +163,17 @@ class DIP {
   
   
   
+  /**
+   * Flesh out the options object. Kinda like merging two options arrays, but
+   * we get more control over each parameter depending upon what's given.
+   * 
+   * This is a great method for sub-classes to override if they want to define
+   * their own defaults for the image processing methods.
+   * 
+   * @param object $o The options object.
+   * 
+   * @return object The complete options object.
+   */
   public function FillinOptions($o) {
     
     if(!isset($o->w) || !isset($o->h)) {
@@ -188,6 +200,14 @@ class DIP {
   
   
   
+  /**
+   * Calculate the destination path to the final processed image.
+   * 
+   * @param array $path_parts The path-parts discovered from LocateImage. 
+   * @param object $options The options object.
+   * 
+   * @return string The full path to the destination image.
+   */
   public function CalculateDestinationPath($path_parts, $options) {
     // Should we duplicate the directory structure to the original image inside
     // of our cache folder?
@@ -202,7 +222,8 @@ class DIP {
       $tmp_filename = str_replace('/', '.', $path_parts['dirname']) . $path_parts['filename'];
     }
     
-    if($this->debug) echo '<p>$tmp_filename = <pre>' . var_export($tmp_filename, true) . '</pre>';
+    if($this->debug) trace('tmp_filename = ' . $tmp_filename);
+    
     $tmp_filename .= $this->BuildNameFromOptions($options);
     $tmp_filename .= '.' . $path_parts['extension'];
     
@@ -211,6 +232,16 @@ class DIP {
   
   
   
+  /**
+   * Build the name of the processed image. The image name can be altered based
+   * on the options used to process it.
+   * 
+   * Override this in child classes for custom naming patterns.
+   * 
+   * @param object $options The options object
+   * 
+   * @return string The filename for the processed image.
+   */
   public function BuildNameFromOptions($options) {
     
     $n = array();
@@ -243,20 +274,41 @@ class DIP {
   
   
   
+  /**
+   * Locate the image on the local server.
+   * 
+   * TODO: extend to auto-download a remote image and save to temp location.
+   * 
+   * Given a relative url like this: `test_images/sub_dir/boats.jpg`
+   * It returns an array like this:
+   *     $path_parts = array (
+   *       'dirname' => 'test_images/sub_dir',
+   *       'basename' => 'boats.jpg',
+   *       'extension' => 'jpg',
+   *       'filename' => 'boats',
+   *       'sourceImagePath' => '/test_images/sub_dir/boats.jpg'
+   *     )
+   * 
+   * @param string $path The path to the image given in REQUEST.
+   * 
+   * @return array An array of path parts.
+   */
   public function LocateImage($path) {
     
     // Find the parts of the image
     $path_parts = pathinfo($path);
     $path_parts = $this->fixPathParts($path_parts);
     
-    if($this->debug) echo '<p>path_parts = <pre>' . var_export($path_parts, true) . '</pre>';
+    if($this->debug) trace('path_parts', $path_parts);
       
     // Build a valid path to the image so we can open it.
     $sourceImagePath = '/' . $path_parts['dirname'] . '/' . $path_parts['basename'];
     
-    if($this->debug) echo '<p>sourceImagePath = ' . $sourceImagePath . '</p>';
+    if($this->debug) trace('sourceImagePath', $sourceImagePath);
      
     $path_parts['sourceImagePath'] = $sourceImagePath;
+    
+    $path_parts = $this->makePathsAbsolute($path_parts);
     
     return $path_parts;
       
@@ -282,7 +334,7 @@ class DIP {
       
       if(!is_dir($assembled_path . $folder . '/')) {
         
-        if($this->debug) { echo '<p>Will make folder "' . $assembled_path . $folder . '/' . '"</p>'; }
+        if($this->debug) trace('Will make folder "' . $assembled_path . $folder . '/' . '"');
         mkdir($assembled_path . $folder . '/');
       }
       
@@ -317,6 +369,87 @@ class DIP {
   	return $path_parts;
   }
   
+  
+  
+  /**
+   * Hacky and dirty script to find a locally referenced or absolutely ref
+   * image and fix path_parts as needed.
+   * 
+   * @param array $path_parts
+   * 
+   * @return array The adjusted path_parts
+   */
+  public function makePathsAbsolute($path_parts) {
+  	
+  	if($this->debug) trace('makePathsAbsolute');
+  	if($this->debug) trace('$path_parts = ', $path_parts);
+  	
+  	$sn = $_SERVER['SCRIPT_NAME'];
+  	
+  	if($this->debug) trace('sn = ', $sn, strrpos($sn, '/'));
+  	
+  	$abs_path = substr($sn, 1, strrpos($sn, '/'));
+  	
+  	if($this->debug) trace('abs_path = ' . $abs_path);
+  	
+  	// If we have a locally referenced image, then find absolute path.
+  	if(strpos($path_parts['sourceImagePath'], $abs_path) === FALSE) {
+  		
+  		$newSIP = '/' . $abs_path . $path_parts['sourceImagePath'];
+  		if($this->debug) trace('$newSIP = ' . $newSIP);
+  		$path_parts['absSourceImagePath'] = $newSIP;
+  		
+  	}
+  	
+  	// If we have an absolutely referenced image then adjust as necessary.
+  	else {
+  		$path_parts['absSourceImagePath'] = $path_parts['sourceImagePath'];
+  		$path_parts['sourceImagePath'] = str_replace($abs_path, '', $path_parts['sourceImagePath']);
+  		$path_parts['dirname'] = str_replace($abs_path, '', $path_parts['dirname']);
+  	}
+  	
+  	if($this->debug) trace('END makePathsAbsolute');
+  	
+  	return $path_parts;
+  	
+  }
+  
+}
+
+
+function trace() {
+    
+	$arg_list = func_get_args();
+    
+	foreach($arg_list as $message) {
+        
+		$type = gettype($message);
+        if($type == 'boolean' || $type == 'integer' 
+           || $type == 'double' || $type == 'string') 
+        { $entity = 'p'; }
+        else { $entity = 'pre'; }
+         
+        $string = '';
+        if(defined('CLI') && CLI) $string .= "\n";
+        else $string .= "<$entity>";
+        
+        if($entity == 'p') {
+            $string .= $message;
+        }
+        else {
+            $string .= var_export($message, true);
+        }
+        
+        if(defined('CLI') && CLI) $string .= "\n";
+        else $string .= "</$entity>";
+        
+        echo $string;
+        
+    }
+            
+    flush();
+    ob_flush();
+    
 }
 
 

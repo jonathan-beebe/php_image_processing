@@ -7,10 +7,14 @@ error_reporting(-1);
  * see readme for examples.
  */
 include('config.php');
-include('imageLibrary.php');
-include('unsharpen_mask.php');
-include('DIP.class.php');
-include('SimpleDIP.class.php');
+include('classes/imageLibrary.php');
+include('classes/unsharpen_mask.php');
+include('classes/DIP.class.php');
+include('classes/SimpleDIP.class.php');
+
+//trace($_SERVER);
+//
+//trace('cwd: ', getcwd());
 
 $debug = false;
 
