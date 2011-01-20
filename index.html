@@ -6,19 +6,19 @@
     </head>
     <body>
         <h1>100px square + sharpening version:</h1>
-        <img src="image.php?i=test_images/boats.jpg&w=100&h=100&sharpen" />
+        <img src='image.php?i=test_images/sub_dir/boats.jpg&o={"w":100,"h":100,"filter":{"sharpen":true}}' />
         <h1>100px square no sharpening version:</h1>
-        <img src="image.php?i=test_images/boats.jpg&w=100&h=100" />
+        <img src='image.php?i=test_images/sub_dir/boats.jpg&o={"w":100,"h":100}' />
 
         <h1>100px square + sharpening version:</h1>
-        <img src="image.php?i=test_images/tree.jpg&w=100&h=100&sharpen" />
+        <img src='image.php?i=test_images/sub_dir/tree.jpg&o={"w":100,"h":100,"filter":{"sharpen":true}}' />
         <h1>100px square no sharpening version:</h1>
-        <img src="image.php?i=test_images/tree.jpg&w=100&h=100" />
+        <img src='image.php?i=test_images/sub_dir/tree.jpg&o={"w":100,"h":100}' />
 
         <h1>Original Image:</h1>
-        <img src="test_images/boats.jpg" />
+        <img src="test_images/sub_dir/boats.jpg" />
         <h1>Original Image:</h1>
-        <img src="test_images/tree.jpg" />
+        <img src="test_images/sub_dir/tree.jpg" />
     </body>
 
     <!-- IE hack example from Google slide show -->

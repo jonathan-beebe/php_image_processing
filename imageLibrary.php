@@ -1,5 +1,5 @@
 <?php
-
+ 
 	set_error_handler("my_warning_handler", E_WARNING);
 
 	function my_warning_handler($errno, $errstr) {
@@ -36,7 +36,7 @@
 		
 		function getImage() {
 			if(file_exists($this->path)) {
-					
+        
 				$info = GetImageSize($this->path);
 				
 				$type = $info[2];
@@ -70,10 +70,10 @@
 				if(isset($image_create_func)) {
 				    $image = $image_create_func($this->path);
 				}
-
+        
 				$mime = image_type_to_mime_type($info[2]);
 				header("Content-type: $mime");
-
+        
 				// Writing image according to type to the output destination
 				switch ( $info[2] ) {
 					case IMAGETYPE_GIF:   imagegif($image);    break;
