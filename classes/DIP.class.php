@@ -384,7 +384,7 @@ class DIP {
   	if($this->debug) trace('makePathsAbsolute');
   	if($this->debug) trace('$path_parts = ', $path_parts);
   	
-  	$sn = $_SERVER['SCRIPT_NAME'];
+  	$sn = $_SERVER['SCRIPT_FILENAME'];
   	
   	if($this->debug) trace('sn = ', $sn, strrpos($sn, '/'));
   	

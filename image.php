@@ -1,6 +1,6 @@
 <?php
 
-error_reporting(-1);
+error_reporting(0);
 
 /**
  * Renders an image to the browser
@@ -21,8 +21,8 @@ $debug = false;
 // Only continue if the url contains a valid image url.
 if(isset($_REQUEST['i']) || isset($_REQUEST['ic'])) {
   
-  // $DIP = new SimpleDIP();
-  $DIP = new DIP();
+  $DIP = new SimpleDIP();
+  // $DIP = new DIP();
   
   // Set the base path for saving cached images
   $DIP->base = SAVE_DESTINATION; // from config
@@ -30,7 +30,7 @@ if(isset($_REQUEST['i']) || isset($_REQUEST['ic'])) {
   $options = buildOptions(); 
   
   // Toggle debug flag if necessary
-  if($options->debug) { $DIP->debug = true; }
+  if(isset($options->debug) && $options->debug) { $DIP->debug = true; }
   
   // Process!
   if(isset($_REQUEST['ic'])) {
